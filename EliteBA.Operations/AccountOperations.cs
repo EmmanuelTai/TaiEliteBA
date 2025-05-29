@@ -2,11 +2,8 @@
 using EliteBA.DB;
 using EliteBA.Models;
 using EliteBA.DTO;
-<<<<<<< HEAD
-
-=======
 using Transaction = EliteBA.Models.Transaction;
->>>>>>> 83beb8e326a7f70ef22fdfc895b074d8826a6dc6
+
 
 namespace EliteBA.Operations;
 public class AccountOperations
@@ -28,10 +25,6 @@ public class AccountOperations
         
         return accountNumber;
     }
-<<<<<<< HEAD
-    
-    
-=======
 
     /// <summary>
     /// Handles transfering of funds from one account to another
@@ -90,35 +83,21 @@ public class AccountOperations
         }
     }
 
->>>>>>> 83beb8e326a7f70ef22fdfc895b074d8826a6dc6
     /// <summary>
     /// This Method creates a new bank account using the details provided in the CreateAccountDto.
     /// 
     /// </summary>
-<<<<<<< HEAD
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    internal static Account CreateAccount(CreateAccountDto dto)
-=======
     /// <param name="accountDetails"></param>
     /// <returns></returns>
     internal static Account CreateAccount(CreateAccountDto accountDetails)
->>>>>>> 83beb8e326a7f70ef22fdfc895b074d8826a6dc6
     {
         var accountNumber = GenerateAccountNumber();
 
         //This converts the accountType string to enum
-<<<<<<< HEAD
-        AccountType parsedAccountType = (AccountType)Enum.Parse(typeof(AccountType), dto.accountType, true);
-        var account = new Account
-        {
-            AccountName = $"{dto.lastname} {dto.firstname}",
-=======
         AccountType parsedAccountType = (AccountType)Enum.Parse(typeof(AccountType), accountDetails.accountType, true);
         var account = new Account
         {
             AccountName = $"{accountDetails.lastname} {accountDetails.firstname}",
->>>>>>> 83beb8e326a7f70ef22fdfc895b074d8826a6dc6
             AccountType = parsedAccountType,
             AccountNumber = accountNumber
         };
@@ -127,9 +106,6 @@ public class AccountOperations
         return account;
     }
 
-<<<<<<< HEAD
-}
-=======
     /// <summary>  
     /// This method is used to ensure that a customer can deposit money into their account and also ensure that the account exists.  
     /// </summary>  
@@ -188,4 +164,3 @@ public class AccountOperations
         return "Withdrawal successful. New balance: " + account.Balance;
     }
 }
->>>>>>> 83beb8e326a7f70ef22fdfc895b074d8826a6dc6
