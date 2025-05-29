@@ -1,10 +1,14 @@
-﻿using EliteBA.DB;
+﻿using System.Transactions;
+using EliteBA.DB;
 using EliteBA.Models;
 using EliteBA.DTO;
+<<<<<<< HEAD
 
+=======
+using Transaction = EliteBA.Models.Transaction;
+>>>>>>> 83beb8e326a7f70ef22fdfc895b074d8826a6dc6
 
 namespace EliteBA.Operations;
-
 public class AccountOperations
 {
     /**
@@ -24,23 +28,97 @@ public class AccountOperations
         
         return accountNumber;
     }
+<<<<<<< HEAD
     
     
+=======
+
+    /// <summary>
+    /// Handles transfering of funds from one account to another
+    /// </summary>
+    /// <param name="transferDetails"></param>
+    /// <returns></returns>
+    public static string Transfer(TransferDTO transferDetails) 
+    {
+        var senderAccInput = Tables.accounts.SingleOrDefault(x => x.AccountNumber == transferDetails.senderAcc);
+        if (senderAccInput == null) 
+        {
+            return $"{transferDetails.senderAcc} does not exist";
+        }
+        var receiverAcc = Tables.accounts.SingleOrDefault(x => x.AccountNumber == transferDetails.receiverAcc);
+        if (receiverAcc == null) 
+        {
+            return $"{transferDetails.receiverAcc} does not exist";
+        }
+        Transaction trans = new Transaction
+        {
+            AccountId = senderAccInput.AccountId,
+            TransactionType = TransactionType.Transfer,
+            Amount = transferDetails.amount,
+            Narration = transferDetails.narration,
+            DateCreated = DateTime.Now,
+        };
+        if (senderAccInput.Balance < transferDetails.amount) 
+        {
+            trans.IsTransfer = false;
+            Tables.transactions.Add(trans);
+            return $"Insufficient fund";
+        }
+        senderAccInput.Balance -= transferDetails.amount;
+        receiverAcc.Balance +=transferDetails.amount;
+        trans.IsTransfer = true;
+        Tables.transactions.Add( trans );  
+        return "Transfer was succesful";
+    }
+
+    /// <summary>
+    /// This method handles the viewing of account balance.
+    /// </summary>
+    /// <param name="accountNumber">The account number of the customer</param>
+    /// <returns></returns>
+    public double ViewAccountBalance(string accountNumber)
+    {
+        var account = Tables.accounts.SingleOrDefault(a => a.AccountNumber == accountNumber);
+
+        if (account != null)
+        {
+            return account.Balance;
+        }
+        else
+        {
+            return 0.00;
+        }
+    }
+
+>>>>>>> 83beb8e326a7f70ef22fdfc895b074d8826a6dc6
     /// <summary>
     /// This Method creates a new bank account using the details provided in the CreateAccountDto.
     /// 
     /// </summary>
+<<<<<<< HEAD
     /// <param name="dto"></param>
     /// <returns></returns>
     internal static Account CreateAccount(CreateAccountDto dto)
+=======
+    /// <param name="accountDetails"></param>
+    /// <returns></returns>
+    internal static Account CreateAccount(CreateAccountDto accountDetails)
+>>>>>>> 83beb8e326a7f70ef22fdfc895b074d8826a6dc6
     {
         var accountNumber = GenerateAccountNumber();
 
         //This converts the accountType string to enum
+<<<<<<< HEAD
         AccountType parsedAccountType = (AccountType)Enum.Parse(typeof(AccountType), dto.accountType, true);
         var account = new Account
         {
             AccountName = $"{dto.lastname} {dto.firstname}",
+=======
+        AccountType parsedAccountType = (AccountType)Enum.Parse(typeof(AccountType), accountDetails.accountType, true);
+        var account = new Account
+        {
+            AccountName = $"{accountDetails.lastname} {accountDetails.firstname}",
+>>>>>>> 83beb8e326a7f70ef22fdfc895b074d8826a6dc6
             AccountType = parsedAccountType,
             AccountNumber = accountNumber
         };
@@ -49,4 +127,65 @@ public class AccountOperations
         return account;
     }
 
+<<<<<<< HEAD
 }
+=======
+    /// <summary>  
+    /// This method is used to ensure that a customer can deposit money into their account and also ensure that the account exists.  
+    /// </summary>  
+    /// <param name="depositDetails"></param>  
+    /// <returns></returns>  
+    public static string Deposit(DepositandWithdrawalDTO depositDetails)
+    {
+        if (depositDetails == null)
+        {
+            return "Invalid deposit details.";
+        }
+        var account = Tables.accounts.FirstOrDefault(a => a.AccountNumber == depositDetails.receiversAccId);
+        if (account == null)
+        {
+            return "Account not found.";
+        }
+        if (depositDetails.Amount <= 0)
+        {
+            return "Invalid deposit amount.";
+        }
+        DepositandWithdrawalDTO deposit = new DepositandWithdrawalDTO
+        {
+            receiversAccId = depositDetails.receiversAccId,
+            Amount = depositDetails.Amount
+        };
+
+        account.Balance += (double)depositDetails.Amount;
+        return "Deposit successful. New balance: " + account.Balance;
+    }
+
+    public string Withdraw(DepositandWithdrawalDTO withdrawDetails)
+    {
+        var account = Tables.accounts.FirstOrDefault(a => a.AccountNumber == withdrawDetails.receiversAccId);
+        if (account == null)
+        {
+            return "Account not found.";
+        }
+
+        if (withdrawDetails.Amount <= 0)
+        {
+            return "Invalid withdrawal amount.";
+        }
+
+        if (account.Balance < withdrawDetails.Amount)
+        {
+            return "Insufficient balance.";
+        }
+        DepositandWithdrawalDTO withdrawal = new DepositandWithdrawalDTO
+        {
+            receiversAccId = withdrawDetails.receiversAccId,
+            Amount = withdrawDetails.Amount
+
+        };
+
+        account.Balance -= withdrawDetails.Amount;
+        return "Withdrawal successful. New balance: " + account.Balance;
+    }
+}
+>>>>>>> 83beb8e326a7f70ef22fdfc895b074d8826a6dc6
