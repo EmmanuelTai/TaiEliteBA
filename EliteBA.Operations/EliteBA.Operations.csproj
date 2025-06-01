@@ -10,6 +10,7 @@
         <ProjectReference Include="..\EliteBA.DB\EliteBA.DB.csproj" />
         <ProjectReference Include="..\EliteBA.DTO\EliteBA.DTO.csproj" />
         <ProjectReference Include="..\EliteBA.Models\EliteBA.Models.csproj" />
+        <ProjectReference Include="..\EliteBA.Utilities\EliteBA.Utilities.csproj" />
     </ItemGroup>
 
 </Project>

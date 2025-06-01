@@ -4,6 +4,7 @@ public class Transaction
 {
     public int TransactionId { get; set; }
     public int AccountId { get; set; }
+    public string AccountNumber { get; set; }
     public TransactionType TransactionType { get; set; }
     public double Amount { get; set; }
     public string? Narration { get; set; }
